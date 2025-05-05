@@ -37,7 +37,7 @@ ALTER TABLE usuarios  -- Modificar tabla
 ADD CONSTRAINT fk_usuario_tipo_usuario
 -- Añade referencia(FK)
 FOREIGN KEY (tipo_usuario_id) REFERENCES
-tipo_usuario(id_tipo_usuario);
+tipo_usuarios(id_tipo_usuario);
 
 CREATE TABLE productos (
 id_producto INT AUTO_INCREMENT PRIMARY KEY, -- Id único
@@ -73,7 +73,7 @@ ALTER TABLE ventas  -- Modificar tabla
 ADD CONSTRAINT fk_ventas_usuarios
 -- Añade referencia(FK)
 FOREIGN KEY (usuario_id) REFERENCES
-usuarios(id_usuario);
+usuarios(id_usuario);id_venta
 
 CREATE TABLE detalle_ventas (
 id_detalle_ventas INT AUTO_INCREMENT PRIMARY KEY, -- Id único
@@ -105,9 +105,33 @@ ADD CONSTRAINT fk_detalle_ventas_productos
 FOREIGN KEY (producto_id) REFERENCES
 productos(id_producto);
 
+-- 1. Eliminar la FK en detalle ventas
+ALTER TABLE detalle_ventas
+DROP FOREIGN KEY fk_detalle_ventas_ventas;
+
+-- 1. Eliminar la FK en ventas
+ALTER TABLE ventas
+DROP FOREIGN KEY fk_ventas_usuarios;
+
+-- Paso 1: Cambiar la columna auto_increment para que ya no lo sea
+ALTER TABLE ventas MODIFY id_ventas INT;
+
+-- Paso 2: Ahora sí puedes eliminar la clave primaria
+ALTER TABLE ventas DROP PRIMARY KEY;
+
+ALTER TABLE ventas
+CHANGE COLUMN id_ventas id_venta INT PRIMARY KEY AUTO_INCREMENT;
 
 
 
 
-  git config --global user.email "abigailcaniucura@gmail.com"
-  git config --global user.name "AbigailCaniucura18"
+
+
+
+
+
+
+
+
+
+
