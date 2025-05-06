@@ -73,7 +73,7 @@ ALTER TABLE ventas  -- Modificar tabla
 ADD CONSTRAINT fk_ventas_usuarios
 -- Añade referencia(FK)
 FOREIGN KEY (usuario_id) REFERENCES
-usuarios(id_usuario);id_venta
+usuarios(id_usuario);
 
 CREATE TABLE detalle_ventas (
 id_detalle_ventas INT AUTO_INCREMENT PRIMARY KEY, -- Id único
@@ -122,6 +122,9 @@ ALTER TABLE ventas DROP PRIMARY KEY;
 ALTER TABLE ventas
 CHANGE COLUMN id_ventas id_venta INT PRIMARY KEY AUTO_INCREMENT;
 
+ALTER TABLE usuarios ADD Password VARCHAR(15) AFTER correo;
+
+ALTER TABLE tipo_usuarios ADD descripcion_tipo VARCHAR(200) AFTER nombre_tipo;
 
 
 
