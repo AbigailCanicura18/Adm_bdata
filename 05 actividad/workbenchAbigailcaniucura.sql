@@ -274,6 +274,46 @@ VALUES (
 
 );
 
+INSERT INTO ventas (
+    usuario_id, fecha, created_by, updated_by
+)
+VALUES
+(
+    3, '2025-05-25', 3, 3
+),
+(
+    4, '2025-05-26', 4, 4
+),
+(
+    5, '2025-05-26', 5, 5
+),
+(
+    3, '2025-05-27', 3, 3
+),
+(
+    4, '2025-05-27', 4, 4
+);
+
+INSERT INTO detalle_ventas (
+    venta_id, producto_id, cantidad, precio_unitario, created_by, updated_by
+)
+VALUES
+(
+    1, 1, 2, 21.990, 3, 3
+),
+(
+    2, 2, 1, 72.632, 4, 4
+),
+(
+    3, 3, 3, 28.187, 5, 5
+),
+(
+    4, 4, 1, 99.990, 3, 3
+),
+(
+    5, 5, 4, 64.660, 4, 4
+);
+
 
 select*from productos;
 select*from tipo_usuarios;
