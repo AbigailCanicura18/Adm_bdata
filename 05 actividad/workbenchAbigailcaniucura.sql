@@ -273,51 +273,98 @@ VALUES (
     3
 
 );
+ALTER TABLE ventas
+CHANGE COLUMN Fecha fecha DATETIME;
+
 
 INSERT INTO ventas (
-    usuario_id, fecha, created_by, updated_by
+    usuario_id, fecha, created_by, updated_by        
 )
 VALUES
 (
-    3, '2025-05-25', 3, 3
+    2,                -- Usuario que hizo la venta
+    NOW(),            -- Fecha y hora actual del sistema
+    3,                -- Usuario que creó el registro
+    2                 -- Usuario que lo actualizó por última vez
 ),
 (
-    4, '2025-05-26', 4, 4
+    2,
+    NOW(),
+    3,
+    3
 ),
 (
-    5, '2025-05-26', 5, 5
+    2,
+    NOW(),
+    3,
+    3
 ),
 (
-    3, '2025-05-27', 3, 3
+    2,
+    NOW(),
+    3,
+    2
 ),
 (
-    4, '2025-05-27', 4, 4
+    2,
+    NOW(),
+    3,
+    2
 );
+
 
 INSERT INTO detalle_ventas (
-    venta_id, producto_id, cantidad, precio_unitario, created_by, updated_by
+    venta_id, producto_id, cantidad, precio_unitario, created_by, updated_by          
 )
 VALUES
 (
-    1, 1, 2, 21.990, 3, 3
+    1,      -- Esta línea corresponde a la venta con ID 1
+    1,      -- Producto con ID 1
+    15,      -- Se vendieron 2 unidades
+    21.990, -- Precio unitario del producto: 21.990
+    2,      -- Creado por el usuario con ID 3
+    2       -- Última actualización por el usuario con ID 3
 ),
 (
-    2, 2, 1, 72.632, 4, 4
+    2,
+    2,
+    72,
+    72.632,
+    2,
+    3
 ),
 (
-    3, 3, 3, 28.187, 5, 5
+    3,
+    3,
+    90,
+    28.187,
+    2,
+    2
 ),
 (
-    4, 4, 1, 99.990, 3, 3
+    4,
+    4,
+    35,
+    99.990,
+    2,
+    3
 ),
 (
-    5, 5, 4, 64.660, 4, 4
+    5,
+    5,
+    40,
+    64.660,
+    2,
+    4
 );
 
 
+select*from ventas;
+select*from detalle_ventas;
 select*from productos;
 select*from tipo_usuarios;
 select*from usuarios;
+
 
 
 
