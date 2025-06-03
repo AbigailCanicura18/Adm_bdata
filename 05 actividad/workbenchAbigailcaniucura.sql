@@ -189,6 +189,8 @@ VALUES (
     'abigailcaniucura@gmail.com',
     1,  -- tipo: Administrador
     1,   1  -- creado por el usuario "sistema"
+    
+    
 
 ),
 (
@@ -357,6 +359,58 @@ VALUES
     2,
     4
 );
+
+-- pone a algunos usuarios como activos
+UPDATE usuarios
+SET deleted = 1
+WHERE id_usuario  between 1 and 2;
+
+-- Consulta básica
+SELECT deleted
+FROM usuarios
+WHERE id_usuario BETWEEN 1 AND 2;
+
+--  Consulta con condición múltiple
+SELECT nombre_usuario
+FROM   usuarios
+WHERE tipo_usuario_id = 1;
+
+-- Consulta con LIKE
+SELECT nombre_usuario
+FROM usuarios
+WHERE nombre_usuario LIKE 'i%';
+
+-- Consulta por rango de fechas
+SELECT nombre_usuario
+FROM usuarios
+WHERE DATE (created_at) between "2025-05-27" and "2025-05-27";
+
+
+
+
+
+-- creaciones propias
+SELECT precio_unitario
+FROM detalle_ventas
+WHERE precio_unitario ;
+
+SELECT nombre_usuario
+FROM   usuarios
+WHERE tipo_usuario_id = 4;
+
+SELECT nombre_producto
+FROM   productos
+WHERE id_producto BETWEEN 1 AND 5;
+
+SELECT nombre_producto
+FROM productos
+WHERE nombre_producto LIKE 'U%';
+
+SELECT cantidad
+FROM   detalle_ventas
+WHERE id_detalle_ventas BETWEEN 1 AND 5;
+
+
 
 
 select*from ventas;
