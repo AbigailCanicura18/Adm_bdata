@@ -1,91 +1,105 @@
--- Creación de la base de datos
+-- 📌 Crear la base de datos y seleccionarla
 CREATE DATABASE ejemploSelect;
 USE ejemploSelect;
-drop DATABASE ejemploSelect;
 
--- Tabla: tipo_usuarios
+
+
+-- ====================================
+-- 🧾 Tabla: tipo_usuarios
+-- ====================================
 CREATE TABLE tipo_usuarios (
-    id_tipo INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    nombre_tipo VARCHAR(50) NOT NULL,
-    descripcion_tipo VARCHAR(200) NOT NULL
-    CHECK (CHAR_LENGTH(descripcion_tipo) >= 10 AND descripcion_tipo REGEXP '^[A-Za-z ]+$'),
-    -- campos de auditoria}
+    id_tipo INT AUTO_INCREMENT PRIMARY KEY, -- ID único para cada tipo de usuario
+    nombre_tipo VARCHAR(50) NOT NULL,       -- Nombre del tipo (Ej: Administrador)
+    descripcion_tipo VARCHAR(200) NOT NULL, -- Descripción del tipo
+    -- Validación mínima de longitud (se evita REGEXP para compatibilidad)
+    CHECK (CHAR_LENGTH(descripcion_tipo) >= 10),
+    
+    -- Campos de auditoría
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
--- Fecha creación
-updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-ON UPDATE CURRENT_TIMESTAMP, -- Fecha modificación
-created_by INT, -- Usuario que crea
-updated_by INT, -- Usuario que modifica
-deleted BOOLEAN DEFAULT FALSE -- Borrado lógico
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_by INT,
+    updated_by INT,
+    deleted BOOLEAN DEFAULT FALSE
 );
 
--- Tabla: usuarios (se añade campo created_at con valor por defecto)
+-- ====================================
+-- 👤 Tabla: usuarios
+-- ====================================
 CREATE TABLE usuarios (
-    id_usuario INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    username VARCHAR(50) NOT NULL UNIQUE 
-    CHECK (CHAR_LENGTH(username) >= 3 AND username REGEXP '^[A-Za-z ]+$'),
-    password VARCHAR(200) NOT NULL,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    id_tipo_usuario INT,
-    CONSTRAINT fk_usuarios_tipo_usuarios FOREIGN KEY (id_tipo_usuario) REFERENCES tipo_usuarios(id_tipo),
-    -- campos de auditoria}
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
--- Fecha creación
-updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-ON UPDATE CURRENT_TIMESTAMP, -- Fecha modificación
-created_by INT, -- Usuario que crea
-updated_by INT, -- Usuario que modifica
-deleted BOOLEAN DEFAULT FALSE -- Borrado lógico
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY, -- ID único por usuario
+    username VARCHAR(50) NOT NULL UNIQUE,      -- Nombre de usuario (único)
+    password VARCHAR(200) NOT NULL,            -- Contraseña
+    email VARCHAR(100) NOT NULL UNIQUE,        -- Email único
+    id_tipo_usuario INT,                       -- FK al tipo de usuario
 
+    -- Relación con tipo_usuarios
+    CONSTRAINT fk_usuarios_tipo_usuarios FOREIGN KEY (id_tipo_usuario)
+        REFERENCES tipo_usuarios(id_tipo),
+
+    -- Campos de auditoría
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_by INT,
+    updated_by INT,
+    deleted BOOLEAN DEFAULT FALSE
 );
 
--- Tabla: ciudad (nueva)
+-- ====================================
+-- 🌆 Tabla: ciudad
+-- ====================================
 CREATE TABLE ciudad (
-    id_ciudad INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    nombre_ciudad VARCHAR(100) NOT NULL
-    CHECK (nombre_ciudad IN ('Santiago','Valparaíso', 'Concepción', 'La Serena', 'Puerto Montt')),
-    region VARCHAR(100),
-    -- campos de auditoria}
+    id_ciudad INT AUTO_INCREMENT PRIMARY KEY, -- ID único
+    nombre_ciudad VARCHAR(100) NOT NULL,      -- Nombre de la ciudad
+    -- Validación para restringir a ciertas ciudades
+    CHECK (nombre_ciudad IN ('Santiago','Valparaíso','Concepción','La Serena','Puerto Montt')),
+    region VARCHAR(100),                      -- Región a la que pertenece
+
+    -- Campos de auditoría
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
--- Fecha creación
-updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-ON UPDATE CURRENT_TIMESTAMP, -- Fecha modificación
-created_by INT, -- Usuario que crea
-updated_by INT, -- Usuario que modifica
-deleted BOOLEAN DEFAULT FALSE -- Borrado lógico
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_by INT,
+    updated_by INT,
+    deleted BOOLEAN DEFAULT FALSE
 );
 
-drop table personas;
-
--- Tabla: personas (relacionada con usuarios y ciudad)
+-- ====================================
+-- 👥 Tabla: personas
+-- ====================================
 CREATE TABLE personas (
-	id_persona INT auto_increment PRIMARY KEY,
-    rut VARCHAR(25) NOT NULL UNIQUE,
-    nombre_completo VARCHAR(100) NOT NULL 
+    id_persona INT AUTO_INCREMENT PRIMARY KEY, -- ID único
+    rut VARCHAR(25) NOT NULL UNIQUE,           -- RUT chileno (único)
+    nombre_completo VARCHAR(100) NOT NULL,     -- Nombre de la persona
+    -- Validación mínima de longitud (sin REGEXP para compatibilidad)
     CHECK (CHAR_LENGTH(nombre_completo) >= 10),
-    fecha_nac DATE,
-    id_usuario INT,
-    id_ciudad INT,
-    CONSTRAINT fk_personas_usuarios FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
-    CONSTRAINT fk_personas_ciudad FOREIGN KEY (id_ciudad) REFERENCES ciudad(id_ciudad),
-    -- campos de auditoria}
+    fecha_nac DATE,                            -- Fecha de nacimiento
+    id_usuario INT,                            -- FK al usuario
+    id_ciudad INT,                             -- FK a la ciudad
+
+    -- Relaciones
+    CONSTRAINT fk_personas_usuarios FOREIGN KEY (id_usuario)
+        REFERENCES usuarios(id_usuario),
+    CONSTRAINT fk_personas_ciudad FOREIGN KEY (id_ciudad)
+        REFERENCES ciudad(id_ciudad),
+
+    -- Campos de auditoría
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
--- Fecha creación
-updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-ON UPDATE CURRENT_TIMESTAMP, -- Fecha modificación
-created_by INT, -- Usuario que crea
-updated_by INT, -- Usuario que modifica
-deleted BOOLEAN DEFAULT FALSE -- Borrado lógico
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_by INT,
+    updated_by INT,
+    deleted BOOLEAN DEFAULT FALSE
 );
 
+-- ====================================
+-- 🧪 Poblar las tablas
+-- ====================================
 
--- Poblar tabla tipo_usuarios
+-- Tabla tipo_usuarios
 INSERT INTO tipo_usuarios (nombre_tipo, descripcion_tipo) VALUES
 ('Administrador', 'Acceso completo al sistema'),
 ('Cliente', 'Usuario con acceso restringido'),
 ('Moderador', 'Puede revisar y aprobar contenido');
 
--- Poblar tabla usuarios
+-- Tabla usuarios
 INSERT INTO usuarios (username, password, email, id_tipo_usuario) VALUES
 ('admin', 'pass1234', 'admin01@mail.com', 1),
 ('jvaldes', 'abc123', 'jvaldes@mail.com', 2),
@@ -98,7 +112,7 @@ INSERT INTO usuarios (username, password, email, id_tipo_usuario) VALUES
 ('ltapia', 'lt123', 'ltapia@mail.com', 3),
 ('afarias', 'afpass', 'afarias@mail.com', 2);
 
--- Poblar tabla ciudad
+-- Tabla ciudad
 INSERT INTO ciudad (nombre_ciudad, region) VALUES
 ('Santiago', 'Región Metropolitana'),
 ('Valparaíso', 'Región de Valparaíso'),
@@ -106,7 +120,7 @@ INSERT INTO ciudad (nombre_ciudad, region) VALUES
 ('La Serena', 'Región de Coquimbo'),
 ('Puerto Montt', 'Región de Los Lagos');
 
--- Poblar tabla personas (relacionadas con usuarios y ciudades)
+-- Tabla personas
 INSERT INTO personas (rut, nombre_completo, fecha_nac, id_usuario, id_ciudad) VALUES
 ('11.111.111-1', 'Juan Valdés', '1990-04-12', 2, 1),
 ('22.222.222-2', 'Camila Morales', '1985-09-25', 3, 2),
@@ -117,64 +131,47 @@ INSERT INTO personas (rut, nombre_completo, fecha_nac, id_usuario, id_ciudad) VA
 ('77.777.777-7', 'Sebastián Carvajal', '1993-03-22', 8, 2),
 ('88.888.888-8', 'Lorena Tapia', '2000-10-10', 9, 3),
 ('99.999.999-9', 'Ana Farías', '1995-01-28', 10, 4),
-('10.101.010-0', 'Carlos Soto', '1991-08-08', 1, 1); -- admin01
+('10.101.010-0', 'Carlos Soto', '1991-08-08', 1, 1); -- admin
 
-select * from usuarios;
-select * from tipo_usuarios;
-select * from ciudad;
-select * from personas;
+-- ====================================
+-- 🔍 Consultas útiles
+-- ====================================
 
-
-SHOW CREATE TABLE personas;
-
--- 1.-  Mostrar todos los usuarios de tipo Cliente
--- Seleccionar nombre de usuario, correo y tipo_usuario
-SELECT username, email, id_tipo_usuario
-FROM   usuarios
+-- 1. Usuarios de tipo Cliente
+SELECT username, email
+FROM usuarios
 WHERE id_tipo_usuario = 2;
 
--- 2.-  Mostrar Personas nacidas despues del año 1990
--- Seleccionar Nombre, fecha de nacimiento y username.
-SELECT  personas.nombre_completo, personas.fecha_nac, usuarios.username
-FROM   personas, usuarios
-WHERE personas.fecha_nac > 1990
-AND personas.id_usuario = usuarios.id_usuario
+-- 2. Personas nacidas después del año 1990
+SELECT personas.nombre_completo, personas.fecha_nac, usuarios.username
+FROM personas
+JOIN usuarios ON personas.id_usuario = usuarios.id_usuario
+WHERE personas.fecha_nac > '1990-01-01';
 
--- 3.- Seleccionar nombres de personas que comiencen con la
--- letra A - Seleccionar nombre y correo la persona.
-
+-- 3. Personas cuyo nombre comienza con 'A'
 SELECT personas.nombre_completo, usuarios.email
-FROM   personas, usuarios
-WHERE personas.nombre_completo LIKE 'A%'
-AND personas.id_usuario = usuarios.id_usuario
+FROM personas
+JOIN usuarios ON personas.id_usuario = usuarios.id_usuario
+WHERE personas.nombre_completo LIKE 'A%';
 
+-- 4. Usuarios con correo '@mail.com'
+SELECT username, email
+FROM usuarios
+WHERE email LIKE '%@mail.com%';
 
--- 4.- Mostrar usuarios cuyos dominios de correo sean
--- mail.commit LIKE '%mail.com%'
-SELECT  email
-FROM   usuarios
-WHERE email LIKE '%mail.com%'
+-- 5. Personas que NO viven en Valparaíso
+SELECT personas.nombre_completo, ciudad.nombre_ciudad, usuarios.username
+FROM personas
+JOIN ciudad ON personas.id_ciudad = ciudad.id_ciudad
+JOIN usuarios ON personas.id_usuario = usuarios.id_usuario
+WHERE ciudad.nombre_ciudad <> 'Valparaíso';
 
-
--- 5.- Mostrar todas las personas que no viven en
--- Valparaiso y su usuario + ciudad.
- -- select * from ciudad; -- ID 2 VALPARAISO
-
-SELECT  ciudad.nombre_ciudad,  usuarios.username
-FROM   ciudad, usuarios
-WHERE nombre_ciudad <> 'Valparaíso'
-
-
--- 6.- Mostrar usuarios que contengan más de 7
--- carácteres de longitud.
+-- 6. Usuarios con nombre de más de 7 caracteres
 SELECT username
-FROM  usuarios
-WHERE  LENGTH(username) > 7
+FROM usuarios
+WHERE CHAR_LENGTH(username) > 7;
 
-
--- 7.- Mostrar username de personas nacidas entre
--- 1990 y 1995
-
+-- 7. Usuarios nacidos entre 1990 y 1995
 SELECT usuarios.username
 FROM personas
 JOIN usuarios ON personas.id_usuario = usuarios.id_usuario
