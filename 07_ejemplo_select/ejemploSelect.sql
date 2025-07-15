@@ -1,13 +1,14 @@
 -- Creación de la base de datos
 CREATE DATABASE ejemploSelect;
 USE ejemploSelect;
-
+drop DATABASE ejemploSelect;
 
 -- Tabla: tipo_usuarios
 CREATE TABLE tipo_usuarios (
     id_tipo INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     nombre_tipo VARCHAR(50) NOT NULL,
-    descripcion_tipo VARCHAR(200) NOT NULL,
+    descripcion_tipo VARCHAR(200) NOT NULL
+    CHECK (CHAR_LENGTH(descripcion_tipo) >= 10 AND descripcion_tipo REGEXP '^[A-Za-z ]+$'),
     -- campos de auditoria}
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 -- Fecha creación
@@ -21,7 +22,8 @@ deleted BOOLEAN DEFAULT FALSE -- Borrado lógico
 -- Tabla: usuarios (se añade campo created_at con valor por defecto)
 CREATE TABLE usuarios (
     id_usuario INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    username VARCHAR(50) NOT NULL UNIQUE,
+    username VARCHAR(50) NOT NULL UNIQUE 
+    CHECK (CHAR_LENGTH(username) >= 3 AND username REGEXP '^[A-Za-z ]+$'),
     password VARCHAR(200) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     id_tipo_usuario INT,
@@ -40,7 +42,8 @@ deleted BOOLEAN DEFAULT FALSE -- Borrado lógico
 -- Tabla: ciudad (nueva)
 CREATE TABLE ciudad (
     id_ciudad INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    nombre_ciudad VARCHAR(100) NOT NULL,
+    nombre_ciudad VARCHAR(100) NOT NULL
+    CHECK (nombre_ciudad IN ('Santiago','Valparaíso', 'Concepción', 'La Serena', 'Puerto Montt')),
     region VARCHAR(100),
     -- campos de auditoria}
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -52,10 +55,14 @@ updated_by INT, -- Usuario que modifica
 deleted BOOLEAN DEFAULT FALSE -- Borrado lógico
 );
 
+drop table personas;
+
 -- Tabla: personas (relacionada con usuarios y ciudad)
 CREATE TABLE personas (
-    rut VARCHAR(13) NOT NULL UNIQUE,
-    nombre_completo VARCHAR(100) NOT NULL,
+	id_persona INT auto_increment PRIMARY KEY,
+    rut VARCHAR(25) NOT NULL UNIQUE,
+    nombre_completo VARCHAR(100) NOT NULL 
+    CHECK (CHAR_LENGTH(nombre_completo) >= 10),
     fecha_nac DATE,
     id_usuario INT,
     id_ciudad INT,
@@ -80,7 +87,7 @@ INSERT INTO tipo_usuarios (nombre_tipo, descripcion_tipo) VALUES
 
 -- Poblar tabla usuarios
 INSERT INTO usuarios (username, password, email, id_tipo_usuario) VALUES
-('admin01', 'pass1234', 'admin01@mail.com', 1),
+('admin', 'pass1234', 'admin01@mail.com', 1),
 ('jvaldes', 'abc123', 'jvaldes@mail.com', 2),
 ('cmorales', '123456', 'cmorales@mail.com', 3),
 ('anavarro', 'pass4321', 'anavarro@mail.com', 2),
@@ -118,6 +125,7 @@ select * from ciudad;
 select * from personas;
 
 
+SHOW CREATE TABLE personas;
 
 -- 1.-  Mostrar todos los usuarios de tipo Cliente
 -- Seleccionar nombre de usuario, correo y tipo_usuario
