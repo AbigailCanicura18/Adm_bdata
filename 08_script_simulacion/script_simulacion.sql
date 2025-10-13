@@ -136,5 +136,3 @@ CREATE TABLE estadisticas_usuario(
     deleted     BOOLEAN DEFAULT FALSE,
     CONSTRAINT fk_est_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id_usuario)
 );
-
- 
