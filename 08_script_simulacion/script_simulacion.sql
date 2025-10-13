@@ -138,21 +138,6 @@ CREATE TABLE estadisticas_usuario(
 );
 
 
-CREATE TABLE logs_sistema(
-    id_log       INT AUTO_INCREMENT PRIMARY KEY,
-    usuario_id   INT NULL,
-    accion       VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(accion) >= 3),
-    descripcion  TEXT,
-    ip_direccion VARCHAR(45),
-    nivel_log    VARCHAR(20) DEFAULT 'INFO' CHECK (nivel_log IN ('INFO','WARNING','ERROR','CRITICAL')),
-    /* auditoría */
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_by INT,
-    deleted    BOOLEAN DEFAULT FALSE,
-    CONSTRAINT fk_log_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id_usuario)
-);
-
-
 -- Inserción de datos iniciales
 
 INSERT INTO tipo_usuarios (nombre_tipo_usuario, descripcion_tipo, created_by) VALUES
