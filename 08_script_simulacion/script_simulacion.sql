@@ -137,3 +137,4 @@ CREATE TABLE estadisticas_usuario(
     CONSTRAINT fk_est_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id_usuario)
 );
 
+ 
