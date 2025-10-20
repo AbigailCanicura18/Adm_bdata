@@ -100,66 +100,62 @@ DELIMITER ;
 
 
 /* =========================
-   5.5) Procedimientos Categorias
-   ========================= */
+   5) Procedimientos de Categoría
+   ========================= */
 
-/* 4.1 Insertar producto (básico, sin validaciones) */
+/* 5.1 Insertar categoría (básico, sin validaciones) */
+/* (Nota: Este ya lo tenías, pero ajusto el parámetro a VARCHAR(100) 
+          para coincidir con la tabla) */
 DELIMITER //
 CREATE PROCEDURE sp_categoria_insertar(
-  IN c_nombre VARCHAR(120)
+  IN p_nombre VARCHAR(100)
 )
 BEGIN
-  INSERT INTO categoria(nombre, deleted)
-  VALUES (c_nombre, 0);
+  INSERT INTO categoria(nombre, deleted)
+  VALUES (p_nombre, 0);
 END//
 DELIMITER ;
 
-/* 4.2 Listar SOLO activos con su categoría (JOIN) */
+/* 5.2 Listar SOLO categorías activas */
 DELIMITER //
 CREATE PROCEDURE sp_categoria_listar_activos()
 BEGIN
-  SELECT 
-    c.id,
-    c.nombre  AS categoria,
-    p.precio,
-    c.nombre  AS categoria
-  FROM producto p
-  INNER JOIN categoria c ON p.categoria_id = c.id
-  WHERE p.deleted = 0
-  ORDER BY p.nombre;
+  SELECT 
+    id,
+    nombre
+  FROM categoria
+  WHERE deleted = 0
+  ORDER BY nombre;
 END//
 DELIMITER ;
 
-/* 4.3 Borrado lógico: poner deleted = 1 */
+/* 5.3 Borrado lógico de categoría: poner deleted = 1 */
 DELIMITER //
-CREATE PROCEDURE sp_producto_borrado_logico(
-  IN p_id INT
+CREATE PROCEDURE sp_categoria_borrado_logico(
+  IN p_id INT
 )
 BEGIN
-  UPDATE producto
-  SET deleted = 1
-  WHERE id = p_id;
+  UPDATE categoria
+  SET deleted = 1
+  WHERE id = p_id;
 END//
 DELIMITER ;
 
-/* (Opcional) 4.4 Listar TODOS (activos y borrados) */
+/* 5.4 Listar TODAS las categorías (activas y borradas) */
 DELIMITER //
-CREATE PROCEDURE sp_producto_listar_todo()
+CREATE PROCEDURE sp_categoria_listar_todo()
 BEGIN
-  SELECT 
-    p.id,
-    p.nombre  AS producto,
-    p.precio,
-    c.nombre  AS categoria,
-    p.deleted
-  FROM producto p
-  INNER JOIN categoria c ON p.categoria_id = c.id
-  ORDER BY p.nombre;
+  SELECT 
+    id,
+    nombre,
+    deleted
+  FROM categoria
+  ORDER BY nombre;
 END//
 DELIMITER ;
 
 /* =========================
-   5) Pruebas rápidas
+6) Pruebas rápidas
    ========================= */
 
 /* Insertar productos usando el SP */
