@@ -116,11 +116,11 @@ DELIMITER ;
 
 /* 4.2 Listar SOLO activos con su categoría (JOIN) */
 DELIMITER //
-CREATE PROCEDURE sp_producto_listar_activos()
+CREATE PROCEDURE sp_categoria_listar_activos()
 BEGIN
   SELECT 
-    p.id,
-    p.nombre  AS producto,
+    c.id,
+    c.nombre  AS categoria,
     p.precio,
     c.nombre  AS categoria
   FROM producto p
