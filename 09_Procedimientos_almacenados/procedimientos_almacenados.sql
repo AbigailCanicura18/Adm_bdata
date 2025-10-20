@@ -1,12 +1,12 @@
 /* =========================
-  1) Base de datos
+1) Base de datos
    ========================= */
 DROP DATABASE IF EXISTS tienda_demo;
 CREATE DATABASE tienda_demo;
 USE tienda_demo;
 
 /* =========================
-  2) Tablas
+2) Tablas
    ========================= */
 DROP TABLE IF EXISTS producto;
 DROP TABLE IF EXISTS categoria;
@@ -31,7 +31,7 @@ CREATE TABLE producto (
 ) ENGINE=InnoDB;
 
 /* =========================
-  3) Datos base (categorías)
+3) Datos base (categorías)
    ========================= */
 INSERT INTO categoria (nombre) VALUES
     ('Bebidas'),
@@ -39,7 +39,7 @@ INSERT INTO categoria (nombre) VALUES
     ('Limpieza');
 
 /* =========================
-  4) Procedimientos de Producto
+4) Procedimientos de Producto
    ========================= */
 
 /* 4.1 Insertar producto (básico, sin validaciones) */
@@ -109,7 +109,7 @@ END//
 DELIMITER ;
 
 /* =========================
-  5) Procedimientos de Categoría
+5) Procedimientos de Categoría
    ========================= */
 
 /* 5.1 Insertar categoría (básico, sin validaciones) */
@@ -169,7 +169,7 @@ END//
 DELIMITER ;
 
 /* =========================
-  6) Pruebas rápidas
+6) Pruebas rápidas
    ========================= */
 
 /* Insertar productos usando el SP */

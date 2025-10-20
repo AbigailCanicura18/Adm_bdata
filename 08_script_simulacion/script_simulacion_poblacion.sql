@@ -18,3 +18,18 @@ INSERT INTO tipo_opiniones (nombre_tipo_opinion, descripcion_tipo, created_by) V
 -- Creación del primer usuario administrador
 INSERT INTO usuarios (nombre_usuario, correo, contrasena, tipo_usuario_id, created_by) VALUES
 ('Admin', 'admin@ciberseguridad.edu', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 1, 1);
+
+
+-- Consultas simples
+
+-- Mostrar todos los tipos de usuarios
+SELECT * FROM tipo_usuarios;
+
+-- Mostrar todos los estados
+SELECT * FROM estados;
+
+-- Mostrar todos los tipos de opiniones
+SELECT * FROM tipo_opiniones;
+
+-- Mostrar todos los usuarios
+SELECT * FROM usuarios;

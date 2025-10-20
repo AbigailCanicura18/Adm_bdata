@@ -1,0 +1,348 @@
+USE ciberseguridad_simulacion;
+
+-- ==========================================================
+-- SCRIPT 3: PROCEDIMIENTOS ALMACENADOS
+-- ==========================================================
+
+
+-- ==========================================
+-- TABLA: tipo_usuarios
+-- ==========================================
+
+DELIMITER //
+CREATE PROCEDURE insertarTipoUsuarios(
+    IN p_nombre_tipo_usuario VARCHAR(50),
+    IN p_descripcion_tipo VARCHAR(100),
+    IN p_created_by INT
+)
+BEGIN
+    INSERT INTO tipo_usuarios(nombre_tipo_usuario, descripcion_tipo, created_by)
+    VALUES (p_nombre_tipo_usuario, p_descripcion_tipo, p_created_by);
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE borrarTipoUsuarios(
+    IN p_id INT
+)
+BEGIN
+    UPDATE tipo_usuarios SET deleted = 1 WHERE id_tipo_usuario = p_id;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE mostrarTipoUsuariosActivos()
+BEGIN
+    SELECT * FROM tipo_usuarios WHERE deleted = 0;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE mostrarTipoUsuariosTodos()
+BEGIN
+    SELECT * FROM tipo_usuarios;
+END//
+DELIMITER ;
+
+
+-- ==========================================
+-- TABLA: estados
+-- ==========================================
+
+DELIMITER //
+CREATE PROCEDURE insertarEstados(
+    IN p_nombre_estado VARCHAR(20),
+    IN p_descripcion_estado VARCHAR(100),
+    IN p_created_by INT
+)
+BEGIN
+    INSERT INTO estados(nombre_estado, descripcion_estado, created_by)
+    VALUES (p_nombre_estado, p_descripcion_estado, p_created_by);
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE borrarEstados(
+    IN p_id INT
+)
+BEGIN
+    UPDATE estados SET deleted = 1 WHERE id_estado = p_id;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE mostrarEstadosActivos()
+BEGIN
+    SELECT * FROM estados WHERE deleted = 0;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE mostrarEstadosTodos()
+BEGIN
+    SELECT * FROM estados;
+END//
+DELIMITER ;
+
+
+-- ==========================================
+-- TABLA: tipo_opiniones
+-- ==========================================
+
+DELIMITER //
+CREATE PROCEDURE insertarTipoOpiniones(
+    IN p_nombre_tipo_opinion VARCHAR(50),
+    IN p_descripcion_tipo VARCHAR(100),
+    IN p_created_by INT
+)
+BEGIN
+    INSERT INTO tipo_opiniones(nombre_tipo_opinion, descripcion_tipo, created_by)
+    VALUES (p_nombre_tipo_opinion, p_descripcion_tipo, p_created_by);
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE borrarTipoOpiniones(
+    IN p_id INT
+)
+BEGIN
+    UPDATE tipo_opiniones SET deleted = 1 WHERE id_tipo_opinion = p_id;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE mostrarTipoOpinionesActivos()
+BEGIN
+    SELECT * FROM tipo_opiniones WHERE deleted = 0;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE mostrarTipoOpinionesTodos()
+BEGIN
+    SELECT * FROM tipo_opiniones;
+END//
+DELIMITER ;
+
+
+-- ==========================================
+-- TABLA: usuarios
+-- ==========================================
+
+DELIMITER //
+CREATE PROCEDURE insertarUsuarios(
+    IN p_nombre_usuario VARCHAR(100),
+    IN p_correo VARCHAR(100),
+    IN p_contrasena VARCHAR(255),
+    IN p_tipo_usuario_id INT,
+    IN p_created_by INT
+)
+BEGIN
+    INSERT INTO usuarios(nombre_usuario, correo, contrasena, tipo_usuario_id, created_by)
+    VALUES (p_nombre_usuario, p_correo, p_contrasena, p_tipo_usuario_id, p_created_by);
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE borrarUsuarios(
+    IN p_id INT
+)
+BEGIN
+    UPDATE usuarios SET deleted = 1 WHERE id_usuario = p_id;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE mostrarUsuariosActivos()
+BEGIN
+    SELECT * FROM usuarios WHERE deleted = 0;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE mostrarUsuariosTodos()
+BEGIN
+    SELECT * FROM usuarios;
+END//
+DELIMITER ;
+
+
+-- ==========================================
+-- TABLA: simulaciones
+-- ==========================================
+
+DELIMITER //
+CREATE PROCEDURE insertarSimulaciones(
+    IN p_usuario_id INT,
+    IN p_estado_id INT,
+    IN p_puntaje DECIMAL(5,2),
+    IN p_fue_enganado BOOLEAN,
+    IN p_ip_usuario VARCHAR(45),
+    IN p_created_by INT
+)
+BEGIN
+    INSERT INTO simulaciones(usuario_id, estado_id, puntaje, fue_enganado, ip_usuario, created_by)
+    VALUES (p_usuario_id, p_estado_id, p_puntaje, p_fue_enganado, p_ip_usuario, p_created_by);
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE borrarSimulaciones(
+    IN p_id INT
+)
+BEGIN
+    UPDATE simulaciones SET deleted = 1 WHERE id_simulacion = p_id;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE mostrarSimulacionesActivos()
+BEGIN
+    SELECT * FROM simulaciones WHERE deleted = 0;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE mostrarSimulacionesTodos()
+BEGIN
+    SELECT * FROM simulaciones;
+END//
+DELIMITER ;
+
+
+-- ==========================================
+-- TABLA: datos_simulacion
+-- ==========================================
+
+DELIMITER //
+CREATE PROCEDURE insertarDatosSimulacion(
+    IN p_simulacion_id INT,
+    IN p_telefono_falso VARCHAR(20),
+    IN p_correo_falso VARCHAR(150),
+    IN p_usuario_falso VARCHAR(50),
+    IN p_contrasena_falsa VARCHAR(255),
+    IN p_tipo_dato VARCHAR(30),
+    IN p_datos_adicionales TEXT,
+    IN p_created_by INT
+)
+BEGIN
+    INSERT INTO datos_simulacion(simulacion_id, telefono_falso, correo_falso, usuario_falso, contrasena_falsa, tipo_dato, datos_adicionales, created_by)
+    VALUES (p_simulacion_id, p_telefono_falso, p_correo_falso, p_usuario_falso, p_contrasena_falsa, p_tipo_dato, p_datos_adicionales, p_created_by);
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE borrarDatosSimulacion(
+    IN p_id INT
+)
+BEGIN
+    UPDATE datos_simulacion SET deleted = 1 WHERE id_datos = p_id;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE mostrarDatosSimulacionActivos()
+BEGIN
+    SELECT * FROM datos_simulacion WHERE deleted = 0;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE mostrarDatosSimulacionTodos()
+BEGIN
+    SELECT * FROM datos_simulacion;
+END//
+DELIMITER ;
+
+
+-- ==========================================
+-- TABLA: opiniones_usuarios
+-- ==========================================
+
+DELIMITER //
+CREATE PROCEDURE insertarOpinionesUsuarios(
+    IN p_usuario_id INT,
+    IN p_simulacion_id INT,
+    IN p_tipo_opinion_id INT,
+    IN p_calificacion INT,
+    IN p_comentario TEXT,
+    IN p_es_anonima BOOLEAN,
+    IN p_created_by INT
+)
+BEGIN
+    INSERT INTO opiniones_usuarios(usuario_id, simulacion_id, tipo_opinion_id, calificacion, comentario, es_anonima, created_by)
+    VALUES (p_usuario_id, p_simulacion_id, p_tipo_opinion_id, p_calificacion, p_comentario, p_es_anonima, p_created_by);
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE borrarOpinionesUsuarios(
+    IN p_id INT
+)
+BEGIN
+    UPDATE opiniones_usuarios SET deleted = 1 WHERE id_opinion = p_id;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE mostrarOpinionesUsuariosActivos()
+BEGIN
+    SELECT * FROM opiniones_usuarios WHERE deleted = 0;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE mostrarOpinionesUsuariosTodos()
+BEGIN
+    SELECT * FROM opiniones_usuarios;
+END//
+DELIMITER ;
+
+
+-- ==========================================
+-- TABLA: estadisticas_usuario
+-- ==========================================
+
+DELIMITER //
+CREATE PROCEDURE insertarEstadisticasUsuario(
+    IN p_usuario_id INT,
+    IN p_total_simulaciones INT,
+    IN p_simulaciones_completadas INT,
+    IN p_duracion_promedio DECIMAL(8,2),
+    IN p_puntaje_promedio DECIMAL(5,2),
+    IN p_veces_enganado INT,
+    IN p_veces_detectado INT,
+    IN p_primera_simulacion DATETIME,
+    IN p_ultima_simulacion DATETIME,
+    IN p_created_by INT
+)
+BEGIN
+    INSERT INTO estadisticas_usuario(usuario_id, total_simulaciones, simulaciones_completadas, duracion_promedio, puntaje_promedio, veces_enganado, veces_detectado, primera_simulacion, ultima_simulacion, created_by)
+    VALUES (p_usuario_id, p_total_simulaciones, p_simulaciones_completadas, p_duracion_promedio, p_puntaje_promedio, p_veces_enganado, p_veces_detectado, p_primera_simulacion, p_ultima_simulacion, p_created_by);
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE borrarEstadisticasUsuario(
+    IN p_id INT
+)
+BEGIN
+    UPDATE estadisticas_usuario SET deleted = 1 WHERE id_estadistica = p_id;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE mostrarEstadisticasUsuarioActivos()
+BEGIN
+    SELECT * FROM estadisticas_usuario WHERE deleted = 0;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE mostrarEstadisticasUsuarioTodos()
+BEGIN
+    SELECT * FROM estadisticas_usuario;
+END//
+DELIMITER ;
+
+
